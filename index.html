@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerFit | Premium Fitness Experience</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --brand-red: #dc2626;
+            --brand-yellow: #facc15;
+            --dark-zinc: #09090b;
+        }
+
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: #000; 
+            color: #fff; 
+            overflow-x: hidden;
+        }
+
+        .header-blur {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            padding: 0.8rem 0 !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .text-stroke {
+            -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+            color: transparent;
+        }
+
+        .service-card-hover {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .service-card-hover:hover {
+            transform: translateY(-8px);
+            border-color: var(--brand-red);
+            background: #111;
+        }
+
+        .contact-input {
+            background: #09090b;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .contact-input:focus {
+            border-color: var(--brand-red);
+            outline: none;
+            background: #111;
+        }
+
+        /* BMI Calculator Specific Styles */
+        #bmi-result-card {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: var(--brand-red); border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <nav id="mainNav" class="fixed w-full z-50 py-6 px-6 transition-all duration-300">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="logo text-2xl font-black italic tracking-tight cursor-pointer" onclick="window.scrollTo(0,0)">
+                POWER<span class="text-red-600">FIT</span>
+            </div>
+            
+            <div class="nav-links hidden md:flex items-center space-x-10 text-[11px] font-bold uppercase tracking-[2px]">
+                <a href="#home" class="hover:text-red-600 transition">Home</a>
+                <a href="#services" class="hover:text-red-600 transition">Services</a>
+                <a href="#coach" class="hover:text-red-600 transition">Trainers</a>
+                <a href="#pricing" class="hover:text-red-600 transition">Pricing</a>
+                <a href="#bmi" class="hover:text-red-600 transition">BMI</a>
+                <a href="#contact" class="hover:text-red-600 transition">Contact</a>
+            </div>
+
+            <a href="#contact" class="bg-red-600 px-7 py-2.5 font-black text-sm uppercase skew-x-[-12deg] hover:bg-yellow-400 hover:text-black transition-colors duration-300">
+                Join Squad
+            </a>
+        </div>
+    </nav>
+
+    <header id="home" class="relative h-screen flex items-center justify-center">
+        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80');">
+            <div class="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-black"></div>
+        </div>
+        
+        <div class="relative z-10 text-center px-4" data-aos="fade-up">
+            <span class="text-yellow-400 font-bold tracking-[6px] uppercase text-sm block mb-4">Elite Athletics Only</span>
+            <h1 class="text-7xl md:text-[140px] font-black italic leading-[0.9] uppercase">
+                Push Your <br> <span class="text-red-600">Limits</span>
+            </h1>
+            <div class="mt-10 flex flex-col md:flex-row gap-5 justify-center">
+                <a href="#pricing" class="bg-red-600 text-white px-10 py-4 font-black uppercase text-sm hover:bg-white hover:text-black transition">Start Journey</a>
+                <a href="#services" class="border-2 border-white/30 px-10 py-4 font-black uppercase text-sm hover:border-red-600 transition">View Programs</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="services" class="py-32 bg-zinc-950 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-20 text-center md:text-left">
+                <h2 class="text-5xl font-black italic uppercase">Core <span class="text-red-600">Specialties</span></h2>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="service-card-hover p-10 bg-zinc-900 border-l-2 border-transparent" data-aos="fade-up">
+                    <i class="fa-solid fa-dumbbell text-4xl text-red-600 mb-8"></i>
+                    <h3 class="text-xl font-black italic uppercase mb-4">Heavy Lifting</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Dedicated powerlifting zones and professional grade iron for serious gains.</p>
+                </div>
+                <div class="service-card-hover p-10 bg-zinc-900 border-l-2 border-transparent" data-aos="fade-up" data-aos-delay="100">
+                    <i class="fa-solid fa-bolt text-4xl text-red-600 mb-8"></i>
+                    <h3 class="text-xl font-black italic uppercase mb-4">Functional HIIT</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">High intensity metabolic conditioning designed for fat loss and endurance.</p>
+                </div>
+                <div class="service-card-hover p-10 bg-zinc-900 border-l-2 border-transparent" data-aos="fade-up" data-aos-delay="200">
+                    <i class="fa-solid fa-wheat-awn text-4xl text-red-600 mb-8"></i>
+                    <h3 class="text-xl font-black italic uppercase mb-4">Nutrition Deck</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Data-driven meal plans customized by our certified nutritionists.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="coach" class="py-32 bg-black px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col lg:flex-row gap-16 items-center bg-zinc-900/50 p-6 md:p-12 rounded-3xl border border-white/5 shadow-2xl">
+                <div class="lg:w-1/2 w-full h-[600px] rounded-2xl overflow-hidden group relative" data-aos="fade-right">
+                    <img src="https://images.unsplash.com/photo-1567013127542-490d757e51fe?auto=format&fit=crop&q=80" 
+                         class="w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105" 
+                         alt="Lead Trainer">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                </div>
+                
+                <div class="lg:w-1/2 space-y-8" data-aos="fade-left">
+                    <div class="badge bg-red-600 text-[10px] font-black uppercase tracking-widest px-4 py-1.5 inline-block rounded">Head Coach</div>
+                    <h2 class="text-5xl font-black italic uppercase leading-none">Alex <br> <span class="text-red-600">Rivers</span></h2>
+                    <p class="text-gray-400 italic text-lg leading-relaxed border-l-4 border-red-600 pl-6">
+                        "Your body is a reflection of your discipline. I don't train hobbies; I train champions."
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-6 text-sm">
+                        <div class="p-4 bg-black/40 rounded-lg">
+                            <h5 class="text-red-600 font-black mb-1">12+ Years</h5>
+                            <p class="text-gray-500 uppercase text-[10px] font-bold">Pro Experience</p>
+                        </div>
+                        <div class="p-4 bg-black/40 rounded-lg">
+                            <h5 class="text-red-600 font-black mb-1">Elite Cerified</h5>
+                            <p class="text-gray-500 uppercase text-[10px] font-bold">NASM Specialist</p>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-6 pt-4 text-gray-500">
+                        <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-instagram fa-xl"></i></a>
+                        <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-twitter fa-xl"></i></a>
+                        <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-linkedin fa-xl"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing" class="py-32 bg-zinc-950 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-20">
+                <h2 class="text-5xl font-black italic uppercase">Choose Your <span class="text-red-600">Tier</span></h2>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-zinc-900 p-10 rounded-3xl border border-white/5 flex flex-col justify-between" data-aos="fade-up">
+                    <div>
+                        <h4 class="text-sm font-black uppercase text-gray-500 tracking-widest mb-4">The Basic</h4>
+                        <div class="text-5xl font-black italic mb-10">$29<span class="text-sm italic font-normal text-gray-600">/mo</span></div>
+                        <ul class="space-y-4 text-sm text-gray-400 mb-12">
+                            <li><i class="fa-solid fa-check text-red-600 mr-3"></i>Standard Gym Floor</li>
+                            <li><i class="fa-solid fa-check text-red-600 mr-3"></i>Locker Room Access</li>
+                            <li class="opacity-20"><i class="fa-solid fa-xmark mr-3"></i>Personal Coaching</li>
+                        </ul>
+                    </div>
+                    <button class="w-full py-4 border border-red-600 text-sm font-black uppercase hover:bg-red-600 transition">Select</button>
+                </div>
+                
+                <div class="bg-zinc-900 p-12 rounded-3xl border-2 border-red-600 relative scale-105 shadow-[0_20px_50px_rgba(220,38,38,0.15)] z-10" data-aos="fade-up" data-aos-delay="100">
+                    <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-red-600 text-white text-[10px] font-black px-6 py-1.5 rounded-full uppercase italic">Top Pick</span>
+                    <div>
+                        <h4 class="text-sm font-black uppercase text-yellow-400 tracking-widest mb-4">The Athlete</h4>
+                        <div class="text-6xl font-black italic mb-10">$59<span class="text-sm italic font-normal text-gray-600">/mo</span></div>
+                        <ul class="space-y-4 text-sm text-white mb-12">
+                            <li><i class="fa-solid fa-check text-red-600 mr-3"></i>24/7 Priority Access</li>
+                            <li><i class="fa-solid fa-check text-red-600 mr-3"></i>Full Class Schedule</li>
+                            <li><i class="fa-solid fa-check text-red-600 mr-3"></i>1 On 1 Assessment</li>
+                        </ul>
+                    </div>
+                    <button class="w-full py-4 bg-red-600 text-sm font-black uppercase hover:bg-white hover:text-black transition">Get Access</button>
+                </div>
+
+                <div class="bg-zinc-900 p-10 rounded-3xl border border-white/5 flex flex-col justify-between" data-aos="fade-up" data-aos-delay="200">
+                    <div>
+                        <h4 class="text-sm font-black uppercase text-gray-500 tracking-widest mb-4">The Ultimate</h4>
+                        <div class="text-5xl font-black italic mb-10">$99<span class="text-sm italic font-normal text-gray-600">/mo</span></div>
+                        <ul class="space-y-4 text-sm text-gray-400 mb-12">
+                            <li><i class="fa-solid fa-check text-red-600 mr-3"></i>Dedicated Trainer</li>
+                            <li><i class="fa-solid fa-check text-red-600 mr-3"></i>Custom Diet Deck</li>
+                            <li><i class="fa-solid fa-check text-red-600 mr-3"></i>Spa & Recovery Zone</li>
+                        </ul>
+                    </div>
+                    <button class="w-full py-4 border border-red-600 text-sm font-black uppercase hover:bg-red-600 transition">Select</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="bmi" class="py-32 bg-black px-6 border-t border-white/5">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div data-aos="fade-right">
+                    <span class="text-yellow-400 font-black tracking-[4px] uppercase text-sm block mb-4">Know Your Stats</span>
+                    <h2 class="text-5xl font-black italic uppercase leading-tight mb-8">Measure Your <br> <span class="text-red-600">Performance</span></h2>
+                    <p class="text-gray-400 mb-10 leading-relaxed">The Body Mass Index (BMI) is a starting point. Use our tool to calculate yours and see where you stand on the athletic spectrum.</p>
+                    
+                    <div class="grid grid-cols-2 gap-4 text-[10px] font-black uppercase tracking-widest">
+                        <div class="p-4 border border-white/5 bg-zinc-900/50">
+                            <span class="text-blue-400">Underweight</span> <br> <span class="text-white text-base font-italic">&lt; 18.5</span>
+                        </div>
+                        <div class="p-4 border border-white/5 bg-zinc-900/50">
+                            <span class="text-green-400">Healthy</span> <br> <span class="text-white text-base font-italic">18.5 - 24.9</span>
+                        </div>
+                        <div class="p-4 border border-white/5 bg-zinc-900/50">
+                            <span class="text-yellow-400">Overweight</span> <br> <span class="text-white text-base font-italic">25 - 29.9</span>
+                        </div>
+                        <div class="p-4 border border-white/5 bg-zinc-900/50">
+                            <span class="text-red-600">Obese</span> <br> <span class="text-white text-base font-italic">30 +</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-zinc-900 p-8 md:p-12 rounded-3xl border border-white/10" data-aos="fade-left">
+                    <div class="space-y-6">
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black uppercase tracking-widest text-gray-500">Height (cm)</label>
+                                <input type="number" id="height" placeholder="175" class="contact-input w-full px-4 py-4 text-white">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black uppercase tracking-widest text-gray-500">Weight (kg)</label>
+                                <input type="number" id="weight" placeholder="70" class="contact-input w-full px-4 py-4 text-white">
+                            </div>
+                        </div>
+                        
+                        <button onclick="calculateBMI()" class="w-full bg-white text-black py-5 font-black uppercase tracking-[3px] text-sm hover:bg-red-600 hover:text-white transition-all duration-300">
+                            Analyze Stats
+                        </button>
+
+                        <div id="bmi-result-card" class="hidden mt-8 p-6 bg-black border-l-4 border-red-600">
+                            <div class="flex justify-between items-end">
+                                <div>
+                                    <h4 class="text-[10px] font-black uppercase text-gray-500 mb-1">Your BMI Score</h4>
+                                    <div id="bmi-value" class="text-5xl font-black italic text-white">24.2</div>
+                                </div>
+                                <div class="text-right">
+                                    <h4 class="text-[10px] font-black uppercase text-gray-500 mb-1">Status</h4>
+                                    <div id="bmi-status" class="text-xl font-black italic text-red-600 uppercase">Healthy</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-32 bg-zinc-950 px-6 border-t border-white/5">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-16">
+                <div data-aos="fade-right">
+                    <span class="text-red-600 font-black tracking-[4px] uppercase text-sm block mb-4">Join the Elite</span>
+                    <h2 class="text-6xl font-black italic uppercase leading-tight mb-8">Get In <br> <span class="text-stroke">The Zone</span></h2>
+                    
+                    <p class="text-gray-400 max-w-md mb-12 leading-relaxed">
+                        Ready to transcend your limits? Leave your details below and our head scout will contact you within 24 hours.
+                    </p>
+
+                    <div class="space-y-6">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-zinc-900 flex items-center justify-center text-red-600 border border-white/5">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-[10px] font-black uppercase text-gray-500 tracking-widest">Base Camp</h4>
+                                <p class="text-sm font-bold italic">101 Iron Ave, Power City, PC 5502</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-zinc-900 flex items-center justify-center text-red-600 border border-white/5">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-[10px] font-black uppercase text-gray-500 tracking-widest">Hotline</h4>
+                                <p class="text-sm font-bold italic">+1 (555) POWER-01</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-zinc-900/50 p-8 md:p-12 rounded-3xl border border-white/5 shadow-2xl" data-aos="fade-left">
+                    <form class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black uppercase tracking-[2px] text-gray-500">Name</label>
+                                <input type="text" class="contact-input w-full px-4 py-4 text-sm text-white" placeholder="YOUR NAME">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black uppercase tracking-[2px] text-gray-500">Email</label>
+                                <input type="email" class="contact-input w-full px-4 py-4 text-sm text-white" placeholder="EMAIL@DOMAIN.COM">
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black uppercase tracking-[2px] text-gray-500">Program Interest</label>
+                            <select class="contact-input w-full px-4 py-4 text-sm text-gray-400 appearance-none">
+                                <option>Powerlifting Elite</option>
+                                <option>Functional HIIT</option>
+                                <option>Bodybuilding Pro</option>
+                                <option>Nutrition Deck</option>
+                            </select>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black uppercase tracking-[2px] text-gray-500">Message</label>
+                            <textarea rows="4" class="contact-input w-full px-4 py-4 text-sm text-white resize-none" placeholder="DESCRIBE YOUR GOALS..."></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-red-600 py-5 font-black uppercase tracking-[3px] text-sm hover:bg-white hover:text-black transition-all duration-300 skew-x-[-3deg]">
+                            Secure My Slot
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-20 bg-black border-t border-white/5 text-center px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-2xl font-black italic mb-8 uppercase tracking-tighter cursor-pointer" onclick="window.scrollTo(0,0)">
+                POWER<span class="text-red-600">FIT</span>
+            </div>
+            <div class="flex justify-center space-x-10 mb-10 text-gray-600 text-sm font-bold uppercase tracking-[3px]">
+                <a href="#" class="hover:text-red-600 transition">Insta</a>
+                <a href="#" class="hover:text-red-600 transition">Twit</a>
+                <a href="#" class="hover:text-red-600 transition">Face</a>
+            </div>
+            <p class="text-gray-700 text-[11px] font-bold tracking-widest uppercase">Designed & Developed by [Your Name] • © 2026</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 900, once: true, offset: 120 });
+
+        const navbar = document.getElementById('mainNav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 80) navbar.classList.add('header-blur');
+            else navbar.classList.remove('header-blur');
+        });
+
+        // BMI Calculator Logic
+        function calculateBMI() {
+            const h = document.getElementById('height').value;
+            const w = document.getElementById('weight').value;
+            
+            if(h > 0 && w > 0) {
+                const bmi = (w / ((h/100) * (h/100))).toFixed(1);
+                const resultCard = document.getElementById('bmi-result-card');
+                const valDisp = document.getElementById('bmi-value');
+                const statusDisp = document.getElementById('bmi-status');
+                
+                valDisp.innerText = bmi;
+                resultCard.classList.remove('hidden');
+                
+                let status = "";
+                let color = "";
+
+                if(bmi < 18.5) { status = "Underweight"; color = "#60a5fa"; }
+                else if(bmi < 25) { status = "Healthy"; color = "#4ade80"; }
+                else if(bmi < 30) { status = "Overweight"; color = "#facc15"; }
+                else { status = "Obese"; color = "#dc2626"; }
+
+                statusDisp.innerText = status;
+                statusDisp.style.color = color;
+                resultCard.style.borderColor = color;
+                
+                // Scroll slightly to show result on mobile
+                resultCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+                alert("Please enter valid height and weight stats, brother.");
+            }
+        }
+    </script>
+</body>
+</html>
