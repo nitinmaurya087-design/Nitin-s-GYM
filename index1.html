@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Anytime Fitness Golf City Lucknow - Open 24 Hours, Premium Fitness Experience with Expert Trainers, BMI Calculator, and Flexible Pricing Plans">
+    <title>Anytime Fitness | Golf City, Lucknow</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --brand-red: #dc2626;
+            --brand-yellow: #facc15;
+            --dark-zinc: #09090b;
+        }
+
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: #000; 
+            color: #fff; 
+            overflow-x: hidden;
+        }
+
+        .header-blur {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            padding: 0.8rem 0 !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .text-stroke {
+            -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+            color: transparent;
+        }
+
+        .service-card-hover {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .service-card-hover:hover {
+            transform: translateY(-8px);
+            border-color: var(--brand-red);
+            background: #111;
+        }
+
+        .contact-input {
+            background: #09090b;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .contact-input:focus {
+            border-color: var(--brand-red);
+            outline: none;
+            background: #111;
+        }
+
+        #bmi-result-card {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            overflow-y: auto;
+        }
+
+        .modal.show {
+            display: block;
+        }
+
+        .modal-content {
+            background-color: #111;
+            margin: 2rem auto;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            max-width: 90%;
+            width: 100%;
+            animation: slideDown 0.3s ease;
+        }
+
+        @media (min-width: 768px) {
+            .modal-content {
+                max-width: 900px;
+            }
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close-btn {
+            color: #fff;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: var(--brand-red);
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #111 0%, #1a1a1a 100%);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--brand-red);
+            transform: translateY(-4px);
+        }
+
+        .review-card {
+            background: linear-gradient(135deg, #111 0%, #1a1a1a 100%);
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.3s ease;
+        }
+
+        .review-card:hover {
+            border-color: var(--brand-red);
+            transform: translateY(-4px);
+        }
+
+        .star-filled { color: #facc15; }
+        .star-empty  { color: #444; }
+
+        .badge-open {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            color: #4ade80;
+        }
+
+        /* Popular Times Bar */
+        .bar-wrap { display: flex; align-items: flex-end; gap: 3px; height: 60px; }
+        .bar { width: 100%; border-radius: 4px 4px 0 0; transition: all 0.3s; cursor: default; }
+        .bar:hover { opacity: 0.8; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: var(--brand-red); border-radius: 10px; }
+
+        @keyframes pulse-dot {
+            0%,100% { opacity:1; transform:scale(1); }
+            50%      { opacity:.6; transform:scale(1.4); }
+        }
+        .pulse-dot { animation: pulse-dot 1.5s infinite; }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav id="mainNav" class="fixed w-full z-50 py-6 px-4 md:px-6 transition-all duration-300">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="logo text-xl md:text-2xl font-black italic tracking-tight cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                ANYTIME<span class="text-red-600">FITNESS</span>
+            </div>
+            
+            <div class="nav-links hidden md:flex items-center space-x-8 text-[10px] md:text-[11px] font-bold uppercase tracking-[2px]">
+                <a href="#home" class="hover:text-red-600 transition">Home</a>
+                <a href="#about" class="hover:text-red-600 transition">About</a>
+                <a href="#services" class="hover:text-red-600 transition">Services</a>
+                <a href="#coach" class="hover:text-red-600 transition">Trainers</a>
+                <a href="#pricing" class="hover:text-red-600 transition">Pricing</a>
+                <a href="#reviews" class="hover:text-red-600 transition">Reviews</a>
+                <a href="#bmi" class="hover:text-red-600 transition">BMI</a>
+                <a href="#workout" class="hover:text-red-600 transition">AI Workout</a>
+                <a href="#contact" class="hover:text-red-600 transition">Contact</a>
+                <button onclick="toggleAdmin()" class="hover:text-red-600 transition cursor-pointer flex items-center gap-2">
+                    <i class="fa-solid fa-lock text-sm"></i>Admin
+                </button>
+            </div>
+
+            <a href="#contact" class="bg-red-600 px-5 md:px-7 py-2 md:py-2.5 font-black text-xs md:text-sm uppercase skew-x-[-12deg] hover:bg-yellow-400 hover:text-black transition-colors duration-300">
+                Join Now
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="home" class="relative h-screen flex items-center justify-center pt-20">
+        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=2000');">
+            <div class="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-black"></div>
+        </div>
+        
+        <div class="relative z-10 text-center px-4" data-aos="fade-up">
+            <!-- Live badge -->
+            <div class="inline-flex items-center gap-2 badge-open px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-6">
+                <span class="pulse-dot w-2 h-2 rounded-full bg-green-400 inline-block"></span>
+                Open 24 Hours · Golf City, Lucknow
+            </div>
+
+            <h1 class="text-5xl md:text-7xl lg:text-[120px] font-black italic leading-[0.9] uppercase">
+                Push Your <br> <span class="text-red-600">Limits</span>
+            </h1>
+
+            <!-- Rating Strip -->
+            <div class="mt-6 flex items-center justify-center gap-3">
+                <div class="flex gap-1">
+                    <i class="fa-solid fa-star star-filled"></i>
+                    <i class="fa-solid fa-star star-filled"></i>
+                    <i class="fa-solid fa-star star-filled"></i>
+                    <i class="fa-solid fa-star star-filled"></i>
+                    <i class="fa-solid fa-star-half-stroke star-filled"></i>
+                </div>
+                <span class="font-black text-lg">4.4</span>
+                <span class="text-gray-400 text-sm">(77 reviews on Google)</span>
+            </div>
+
+            <div class="mt-10 flex flex-col md:flex-row gap-4 md:gap-5 justify-center">
+                <a href="#pricing" class="bg-red-600 text-white px-8 md:px-10 py-3 md:py-4 font-black uppercase text-xs md:text-sm hover:bg-white hover:text-black transition">Start Journey</a>
+                <a href="#services" class="border-2 border-white/30 px-8 md:px-10 py-3 md:py-4 font-black uppercase text-xs md:text-sm hover:border-red-600 transition">View Programs</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- About / Gym Info Section -->
+    <section id="about" class="py-12 md:py-16 bg-zinc-950 px-4 md:px-6 border-t border-white/5">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <span class="text-yellow-400 font-black tracking-[4px] uppercase text-xs md:text-sm block mb-4">About Us</span>
+                <h2 class="text-4xl md:text-5xl font-black italic uppercase">Anytime <span class="text-red-600">Fitness</span></h2>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto text-sm md:text-base">
+                    एनीटाइम फिटनेस — Lucknow's premier 24/7 fitness destination, rated <strong class="text-white">4.4 ★</strong> by 77 members on Google Maps.
+                    Located at Sky Line Plaza, Golf City.
+                </p>
+            </div>
+
+            <!-- Info Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="stat-card p-6 rounded-xl text-center" data-aos="fade-up">
+                    <i class="fa-solid fa-clock text-3xl text-red-600 mb-4"></i>
+                    <h4 class="text-white font-black uppercase text-sm mb-1">Open 24 Hours</h4>
+                    <p class="text-gray-400 text-xs">Every day, all year</p>
+                </div>
+                <div class="stat-card p-6 rounded-xl text-center" data-aos="fade-up" data-aos-delay="100">
+                    <i class="fa-solid fa-star text-3xl text-yellow-400 mb-4"></i>
+                    <h4 class="text-white font-black uppercase text-sm mb-1">4.4 / 5 Rating</h4>
+                    <p class="text-gray-400 text-xs">77 Google Reviews</p>
+                </div>
+                <div class="stat-card p-6 rounded-xl text-center" data-aos="fade-up" data-aos-delay="200">
+                    <i class="fa-solid fa-location-dot text-3xl text-red-600 mb-4"></i>
+                    <h4 class="text-white font-black uppercase text-sm mb-1">Golf City, Lucknow</h4>
+                    <p class="text-gray-400 text-xs">Sky Line Plaza, 2nd Floor</p>
+                </div>
+                <div class="stat-card p-6 rounded-xl text-center" data-aos="fade-up" data-aos-delay="300">
+                    <i class="fa-solid fa-dumbbell text-3xl text-red-600 mb-4"></i>
+                    <h4 class="text-white font-black uppercase text-sm mb-1">State-of-the-Art</h4>
+                    <p class="text-gray-400 text-xs">Modern equipment, clean facility</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-12 md:py-16 bg-zinc-950 px-4 md:px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-12 md:mb-16 text-center md:text-left">
+                <h2 class="text-4xl md:text-5xl font-black italic uppercase">Core <span class="text-red-600">Specialties</span></h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                <div class="service-card-hover p-8 md:p-10 bg-zinc-900 border-l-2 border-transparent" data-aos="fade-up">
+                    <i class="fa-solid fa-dumbbell text-4xl text-red-600 mb-8"></i>
+                    <h3 class="text-lg md:text-xl font-black italic uppercase mb-4">Heavy Lifting</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Dedicated powerlifting zones and professional grade iron for serious gains. State-of-the-art machines reviewed by our members.</p>
+                </div>
+                <div class="service-card-hover p-8 md:p-10 bg-zinc-900 border-l-2 border-transparent" data-aos="fade-up" data-aos-delay="100">
+                    <i class="fa-solid fa-bolt text-4xl text-red-600 mb-8"></i>
+                    <h3 class="text-lg md:text-xl font-black italic uppercase mb-4">Functional HIIT</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">High intensity metabolic conditioning with dedicated cardio zones. Great variety of classes rated highly by our community.</p>
+                </div>
+                <div class="service-card-hover p-8 md:p-10 bg-zinc-900 border-l-2 border-transparent" data-aos="fade-up" data-aos-delay="200">
+                    <i class="fa-solid fa-wheat-awn text-4xl text-red-600 mb-8"></i>
+                    <h3 class="text-lg md:text-xl font-black italic uppercase mb-4">Nutrition Deck</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Data-driven meal plans customized by our certified nutritionists to complement your training goals.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coaches Section -->
+    <section id="coach" class="py-12 md:py-16 bg-black px-4 md:px-6">
+        <div class="max-w-7xl mx-auto">
+            <!-- Coach 1 -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center bg-zinc-900/50 p-6 md:p-12 rounded-3xl border border-white/5 shadow-2xl mb-8">
+                <div class="w-full h-[400px] md:h-[600px] rounded-2xl overflow-hidden group relative" data-aos="fade-right">
+                    <img src="https://images.pexels.com/photos/6551144/pexels-photo-6551144.jpeg?auto=compress&cs=tinysrgb&w=800&h=900" 
+                         class="w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105" 
+                         alt="Arjun Patel - Head Coach at Anytime Fitness">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                </div>
+                
+                <div class="w-full space-y-6 md:space-y-8" data-aos="fade-left">
+                    <div class="badge bg-red-600 text-[10px] font-black uppercase tracking-widest px-4 py-1.5 inline-block rounded">Head Coach</div>
+                    <h2 class="text-3xl md:text-5xl font-black italic uppercase leading-none">Arjun <br> <span class="text-red-600">Patel</span></h2>
+                    <p class="text-gray-400 italic text-base md:text-lg leading-relaxed border-l-4 border-red-600 pl-6">
+                        "Your body is a reflection of your discipline. I don't train hobbies; I train champions."
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-4 md:gap-6 text-sm">
+                        <div class="p-4 bg-black/40 rounded-lg">
+                            <h5 class="text-red-600 font-black mb-1">12+ Years</h5>
+                            <p class="text-gray-500 uppercase text-[10px] font-bold">Pro Experience</p>
+                        </div>
+                        <div class="p-4 bg-black/40 rounded-lg">
+                            <h5 class="text-red-600 font-black mb-1">Elite Certified</h5>
+                            <p class="text-gray-500 uppercase text-[10px] font-bold">NASM Specialist</p>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-6 pt-4 text-gray-500">
+                        <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-instagram fa-lg"></i></a>
+                        <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-twitter fa-lg"></i></a>
+                        <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-linkedin fa-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coach 2 -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center bg-zinc-900/50 p-6 md:p-12 rounded-3xl border border-white/5 shadow-2xl">
+                <div class="w-full space-y-6 md:space-y-8 order-2 lg:order-1" data-aos="fade-right">
+                    <div class="badge bg-red-600 text-[10px] font-black uppercase tracking-widest px-4 py-1.5 inline-block rounded">Elite Trainer</div>
+                    <h2 class="text-3xl md:text-5xl font-black italic uppercase leading-none">Sarah <br> <span class="text-red-600">Khan</span></h2>
+                    <p class="text-gray-400 italic text-base md:text-lg leading-relaxed border-l-4 border-red-600 pl-6">
+                        "Strength is not just physical; it's mental. Push beyond your limits with me."
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-4 md:gap-6 text-sm">
+                        <div class="p-4 bg-black/40 rounded-lg">
+                            <h5 class="text-red-600 font-black mb-1">10+ Years</h5>
+                            <p class="text-gray-500 uppercase text-[10px] font-bold">Pro Experience</p>
+                        </div>
+                        <div class="p-4 bg-black/40 rounded-lg">
+                            <h5 class="text-red-600 font-black mb-1">Certified</h5>
+                            <p class="text-gray-500 uppercase text-[10px] font-bold">ACE Specialist</p>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-6 pt-4 text-gray-500">
+                        <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-instagram fa-lg"></i></a>
+                        <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-twitter fa-lg"></i></a>
+                        <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-linkedin fa-lg"></i></a>
+                    </div>
+                </div>
+
+                <div class="w-full h-[400px] md:h-[600px] rounded-2xl overflow-hidden group relative order-1 lg:order-2" data-aos="fade-left">
+                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=800&h=900" 
+                         class="w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105" 
+                         alt="Sarah Khan - Elite Trainer at Anytime Fitness">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-12 md:py-16 bg-zinc-950 px-4 md:px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="text-4xl md:text-5xl font-black italic uppercase">Choose Your <span class="text-red-600">Tier</span></h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                <div class="bg-zinc-900 p-8 md:p-10 rounded-3xl border border-white/5 flex flex-col justify-between" data-aos="fade-up">
+                    <div>
+                        <h4 class="text-sm font-black uppercase text-gray-500 tracking-widest mb-4">The Basic</h4>
+                        <div class="text-4xl md:text-5xl font-black italic mb-10">$29<span class="text-sm italic font-normal text-gray-600">/mo</span></div>
+                        <ul class="space-y-4 text-sm text-gray-400 mb-12">
+                            <li><i class="fa-solid fa-check text-red-600 mr-3"></i>Standard Gym Floor</li>
+                            <li><i class="fa-solid fa-check text-red-600 mr-3"></i>Locker Room Access</li>
+                            <li class="opacity-20"><i class="fa-solid fa-xmark mr-3"></i>Personal Coaching</li>
+                        </ul>
+                    </div>
+                    <button onclick="openPaymentModal('Basic',29)" class="w-full py-3 md:py-4 border border-red-600 text-sm font-black uppercase hover:bg-red-600 transition">Buy Basic</button>
+                </div>
+                
+                <div class="bg-zinc-900 p-10 md:p-12 rounded-3xl border-2 border-red-600 relative md:scale-105 shadow-[0_20px_50px_rgba(220,38,38,0.15)] z-10" data-aos="fade-up" data-aos-delay="100">
+                    <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-red-600 text-white text-[10px] font-black px-6 py-1.5 rounded-full uppercase italic">Top Pick</span>
+                    <div>
+                        <h4 class="text-sm font-black uppercase text-yellow-400 tracking-widest mb-4">The Athlete</h4>
+                        <div class="text-5xl md:text-6xl font-black italic mb-10">$59<span class="text-sm italic font-normal text-gray-600">/mo</span></div>
+                        <ul class="space-y-4 text-sm text-white mb-12">
+                            <li><i class="fa-solid fa-check text-red-600 mr-3"></i>24/7 Priority Access</li>
+                            <li><i class="fa-solid fa-check text-red-600 mr-3"></i>Full Class Schedule</li>
+                            <li><i class="fa-solid fa-check text-red-600 mr-3"></i>1 On 1 Assessment</li>
+                        </ul>
+                    </div>
+                    <button onclick="openPaymentModal('Athlete',59)" class="w-full py-3 md:py-4 bg-red-600 text-sm font-black uppercase hover:bg-white hover:text-black transition">Buy Athlete</button>
+                </div>
+
+                <div class="bg-zinc-900 p-8 md:p-10 rounded-3xl border border-white/5 flex flex-col justify-between" data-aos="fade-up" data-aos-delay="200">
+                    <div>
+                        <h4 class="text-sm font-black uppercase text-gray-500 tracking-widest mb-4">The Ultimate</h4>
+                        <div class="text-4xl md:text-5xl font-black italic mb-10">$99<span class="text-sm italic font-normal text-gray-600">/mo</span></div>
+                        <ul class="space-y-4 text-sm text-gray-400 mb-12">
+                            <li><i class="fa-solid fa-check text-red-600 mr-3"></i>Dedicated Trainer</li>
+                            <li><i class="fa-solid fa-check text-red-600 mr-3"></i>Custom Diet Deck</li>
+                            <li><i class="fa-solid fa-check text-red-600 mr-3"></i>Spa & Recovery Zone</li>
+                        </ul>
+                    </div>
+                    <button onclick="openPaymentModal('Ultimate',99)" class="w-full py-3 md:py-4 border border-red-600 text-sm font-black uppercase hover:bg-red-600 transition">Buy Ultimate</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== GOOGLE REVIEWS SECTION ===== -->
+    <section id="reviews" class="py-12 md:py-16 bg-black px-4 md:px-6 border-t border-white/5">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12" data-aos="fade-up">
+                <span class="text-yellow-400 font-black tracking-[4px] uppercase text-xs md:text-sm block mb-4">Google Reviews</span>
+                <h2 class="text-4xl md:text-5xl font-black italic uppercase">What Members <span class="text-red-600">Say</span></h2>
+
+                <!-- Overall Rating -->
+                <div class="mt-8 inline-flex flex-col items-center bg-zinc-900/60 border border-white/10 rounded-2xl px-10 py-6">
+                    <p class="text-7xl font-black text-white">4.4</p>
+                    <div class="flex gap-1 mt-2">
+                        <i class="fa-solid fa-star star-filled fa-lg"></i>
+                        <i class="fa-solid fa-star star-filled fa-lg"></i>
+                        <i class="fa-solid fa-star star-filled fa-lg"></i>
+                        <i class="fa-solid fa-star star-filled fa-lg"></i>
+                        <i class="fa-solid fa-star-half-stroke star-filled fa-lg"></i>
+                    </div>
+                    <p class="text-gray-400 text-sm mt-2">Based on <strong class="text-white">77 Google reviews</strong></p>
+
+                    <!-- Rating Bars -->
+                    <div class="mt-6 w-full space-y-2 text-xs text-gray-400 min-w-[220px]">
+                        <div class="flex items-center gap-3">
+                            <span class="w-6 text-right">5</span>
+                            <div class="flex-1 bg-zinc-800 rounded-full h-2">
+                                <div class="bg-yellow-400 h-2 rounded-full" style="width:68%"></div>
+                            </div>
+                            <span>68%</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="w-6 text-right">4</span>
+                            <div class="flex-1 bg-zinc-800 rounded-full h-2">
+                                <div class="bg-yellow-400 h-2 rounded-full" style="width:18%"></div>
+                            </div>
+                            <span>18%</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="w-6 text-right">3</span>
+                            <div class="flex-1 bg-zinc-800 rounded-full h-2">
+                                <div class="bg-yellow-400 h-2 rounded-full" style="width:7%"></div>
+                            </div>
+                            <span>7%</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="w-6 text-right">2</span>
+                            <div class="flex-1 bg-zinc-800 rounded-full h-2">
+                                <div class="bg-yellow-400 h-2 rounded-full" style="width:3%"></div>
+                            </div>
+                            <span>3%</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="w-6 text-right">1</span>
+                            <div class="flex-1 bg-zinc-800 rounded-full h-2">
+                                <div class="bg-yellow-400 h-2 rounded-full" style="width:4%"></div>
+                            </div>
+                            <span>4%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Keyword Highlights -->
+                <div class="mt-6 flex flex-wrap gap-3 justify-center">
+                    <span class="bg-zinc-900 border border-white/10 px-4 py-1.5 rounded-full text-xs font-bold text-gray-300">machine (8)</span>
+                    <span class="bg-zinc-900 border border-white/10 px-4 py-1.5 rounded-full text-xs font-bold text-gray-300">motivating (4)</span>
+                    <span class="bg-zinc-900 border border-white/10 px-4 py-1.5 rounded-full text-xs font-bold text-gray-300">parking (3)</span>
+                    <span class="bg-zinc-900 border border-white/10 px-4 py-1.5 rounded-full text-xs font-bold text-gray-300">door (2)</span>
+                    <span class="bg-zinc-900 border border-white/10 px-4 py-1.5 rounded-full text-xs font-bold text-gray-300">clean equipment</span>
+                    <span class="bg-zinc-900 border border-white/10 px-4 py-1.5 rounded-full text-xs font-bold text-gray-300">great staff</span>
+                </div>
+            </div>
+
+            <!-- Review Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Review 1 -->
+                <div class="review-card p-6 md:p-8 rounded-2xl" data-aos="fade-up">
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center font-black text-lg flex-shrink-0">I</div>
+                        <div>
+                            <h5 class="font-black text-white">Ishaan Sahu</h5>
+                            <p class="text-gray-500 text-xs">3 reviews · 2 photos · <span class="text-gray-400">4 months ago</span></p>
+                            <div class="flex gap-1 mt-1">
+                                <i class="fa-solid fa-star star-filled text-xs"></i>
+                                <i class="fa-solid fa-star star-filled text-xs"></i>
+                                <i class="fa-solid fa-star star-filled text-xs"></i>
+                                <i class="fa-solid fa-star star-filled text-xs"></i>
+                                <i class="fa-solid fa-star star-filled text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        "I love the wide variety of machines and dedicated areas for cardio, weights, and stretching. The staff is incredibly welcoming and helpful — they genuinely care about your fitness journey. This is hands-down the best gym I've ever belonged to. Great value for the price."
+                    </p>
+                    <div class="mt-4 flex gap-2">
+                        <span class="bg-zinc-800 px-2 py-1 rounded text-[10px] text-gray-400">machines</span>
+                        <span class="bg-zinc-800 px-2 py-1 rounded text-[10px] text-gray-400">staff</span>
+                        <span class="bg-zinc-800 px-2 py-1 rounded text-[10px] text-gray-400">value</span>
+                    </div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="review-card p-6 md:p-8 rounded-2xl" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center font-black text-lg flex-shrink-0 text-black">A</div>
+                        <div>
+                            <h5 class="font-black text-white">Arjun Awasthi</h5>
+                            <p class="text-gray-500 text-xs">7 reviews · <span class="text-gray-400">2 months ago</span></p>
+                            <div class="flex gap-1 mt-1">
+                                <i class="fa-solid fa-star star-filled text-xs"></i>
+                                <i class="fa-solid fa-star star-filled text-xs"></i>
+                                <i class="fa-solid fa-star star-filled text-xs"></i>
+                                <i class="fa-solid fa-star star-filled text-xs"></i>
+                                <i class="fa-solid fa-star star-filled text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        "I am a regular member of Anytime Fitness since 3 years and I have already enrolled my membership till July 2027. I visited Anytime Fitness Skyline Plaza, Golf City, Ansal API Lucknow today — the experience remains consistently excellent."
+                    </p>
+                    <div class="mt-4 flex gap-2">
+                        <span class="bg-zinc-800 px-2 py-1 rounded text-[10px] text-gray-400">3-year member</span>
+                        <span class="bg-zinc-800 px-2 py-1 rounded text-[10px] text-gray-400">loyal</span>
+                    </div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="review-card p-6 md:p-8 rounded-2xl" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-full bg-green-600 flex items-center justify-center font-black text-lg flex-shrink-0">R</div>
+                        <div>
+                            <h5 class="font-black text-white">Ravinder Kaur</h5>
+                            <p class="text-gray-500 text-xs">1 review · <span class="text-gray-400">4 months ago</span></p>
+                            <div class="flex gap-1 mt-1">
+                                <i class="fa-solid fa-star star-filled text-xs"></i>
+                                <i class="fa-solid fa-star star-filled text-xs"></i>
+                                <i class="fa-solid fa-star star-filled text-xs"></i>
+                                <i class="fa-solid fa-star star-filled text-xs"></i>
+                                <i class="fa-solid fa-star star-filled text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        "This gym is the best. The equipment is state-of-the-art, always clean, and there's a great variety of classes. The trainers are knowledgeable and genuinely supportive, and the staff is consistently welcoming. It's a motivating environment where I feel comfortable working out alongside beginners and more experienced athletes."
+                    </p>
+                    <div class="mt-4 flex gap-2">
+                        <span class="bg-zinc-800 px-2 py-1 rounded text-[10px] text-gray-400">equipment</span>
+                        <span class="bg-zinc-800 px-2 py-1 rounded text-[10px] text-gray-400">motivating</span>
+                        <span class="bg-zinc-800 px-2 py-1 rounded text-[10px] text-gray-400">classes</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Highlighted Summary Quotes -->
+            <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="border border-white/10 rounded-xl p-5 bg-zinc-900/40 text-center" data-aos="fade-up">
+                    <p class="text-gray-300 text-sm italic">"Excellent Service, Good location and Best Environment 😊"</p>
+                </div>
+                <div class="border border-white/10 rounded-xl p-5 bg-zinc-900/40 text-center" data-aos="fade-up" data-aos-delay="100">
+                    <p class="text-gray-300 text-sm italic">"Very spacious, nice quality crowd and very nice staff"</p>
+                </div>
+                <div class="border border-white/10 rounded-xl p-5 bg-zinc-900/40 text-center" data-aos="fade-up" data-aos-delay="200">
+                    <p class="text-gray-300 text-sm italic">"Great gym with modern equipment and motivating atmosphere!"</p>
+                </div>
+            </div>
+
+            <div class="text-center mt-8">
+                <a href="https://maps.google.com/?cid=anytimefitness-golcity" target="_blank" 
+                   class="inline-flex items-center gap-2 border border-red-600 px-6 py-3 font-black uppercase text-xs hover:bg-red-600 transition rounded">
+                    <i class="fa-brands fa-google"></i> Read All 77 Reviews on Google
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== POPULAR TIMES SECTION ===== -->
+    <section class="py-12 md:py-16 bg-zinc-950 px-4 md:px-6 border-t border-white/5">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-10" data-aos="fade-up">
+                <span class="text-yellow-400 font-black tracking-[4px] uppercase text-xs md:text-sm block mb-4">Live Data</span>
+                <h2 class="text-4xl md:text-5xl font-black italic uppercase">Popular <span class="text-red-600">Times</span></h2>
+                <p class="text-gray-400 mt-3 text-sm">Typically not too busy on Tuesdays — best time to visit!</p>
+            </div>
+
+            <div class="bg-zinc-900 rounded-2xl p-6 md:p-10 border border-white/5 max-w-3xl mx-auto" data-aos="fade-up">
+                <!-- Day Tabs -->
+                <div class="flex flex-wrap gap-2 mb-8" id="day-tabs">
+                    <button onclick="showDay(0)" class="day-tab px-4 py-2 rounded-lg text-xs font-black uppercase bg-red-600 text-white transition" data-day="0">Mon</button>
+                    <button onclick="showDay(1)" class="day-tab px-4 py-2 rounded-lg text-xs font-black uppercase bg-zinc-800 text-gray-400 transition hover:bg-zinc-700" data-day="1">Tue</button>
+                    <button onclick="showDay(2)" class="day-tab px-4 py-2 rounded-lg text-xs font-black uppercase bg-zinc-800 text-gray-400 transition hover:bg-zinc-700" data-day="2">Wed</button>
+                    <button onclick="showDay(3)" class="day-tab px-4 py-2 rounded-lg text-xs font-black uppercase bg-zinc-800 text-gray-400 transition hover:bg-zinc-700" data-day="3">Thu</button>
+                    <button onclick="showDay(4)" class="day-tab px-4 py-2 rounded-lg text-xs font-black uppercase bg-zinc-800 text-gray-400 transition hover:bg-zinc-700" data-day="4">Fri</button>
+                    <button onclick="showDay(5)" class="day-tab px-4 py-2 rounded-lg text-xs font-black uppercase bg-zinc-800 text-gray-400 transition hover:bg-zinc-700" data-day="5">Sat</button>
+                    <button onclick="showDay(6)" class="day-tab px-4 py-2 rounded-lg text-xs font-black uppercase bg-zinc-800 text-gray-400 transition hover:bg-zinc-700" data-day="6">Sun</button>
+                </div>
+
+                <!-- Time Labels -->
+                <div class="flex justify-between text-[10px] text-gray-500 font-bold uppercase mb-2 px-1">
+                    <span>6am</span><span>9am</span><span>12pm</span><span>3pm</span><span>6pm</span><span>9pm</span>
+                </div>
+
+                <!-- Bars -->
+                <div id="popular-bars" class="bar-wrap"></div>
+
+                <!-- Status -->
+                <div id="popular-status" class="mt-6 p-4 rounded-xl bg-black/40 border border-white/5 text-sm text-gray-300"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Workout Planner Section -->
+    <section id="workout" class="py-12 md:py-16 bg-zinc-950 px-4 md:px-6 border-t border-white/5">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12 md:mb-16">
+                <span class="text-yellow-400 font-black tracking-[4px] uppercase text-xs md:text-sm block mb-4">AI Powered</span>
+                <h2 class="text-4xl md:text-5xl font-black italic uppercase">Smart <span class="text-red-600">Workout Plans</span></h2>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">Get personalized workout plans generated by AI based on your goals, experience, and stats.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
+                <div data-aos="fade-right">
+                    <div class="bg-zinc-900 p-6 md:p-12 rounded-3xl border border-white/10">
+                        <form onsubmit="generateWorkout(event)" class="space-y-6">
+                            <div class="grid grid-cols-2 gap-4 md:gap-6">
+                                <div class="space-y-2">
+                                    <label class="text-[10px] font-black uppercase tracking-widest text-gray-500">Age</label>
+                                    <input type="number" id="workout-age" placeholder="25" min="16" max="80" class="contact-input w-full px-4 py-3 md:py-4 text-white text-sm rounded" required>
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="text-[10px] font-black uppercase tracking-widest text-gray-500">Height (cm)</label>
+                                    <input type="number" id="workout-height" placeholder="175" min="120" max="250" class="contact-input w-full px-4 py-3 md:py-4 text-white text-sm rounded" required>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-4 md:gap-6">
+                                <div class="space-y-2">
+                                    <label class="text-[10px] font-black uppercase tracking-widest text-gray-500">Weight (kg)</label>
+                                    <input type="number" id="workout-weight" placeholder="70" min="30" max="200" class="contact-input w-full px-4 py-3 md:py-4 text-white text-sm rounded" required>
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="text-[10px] font-black uppercase tracking-widest text-gray-500">Fitness Goal</label>
+                                    <select id="workout-goal" class="contact-input w-full px-4 py-3 md:py-4 text-gray-400 text-sm appearance-none rounded" required>
+                                        <option value="">Select Goal</option>
+                                        <option value="muscle-gain">Muscle Gain</option>
+                                        <option value="fat-loss">Fat Loss</option>
+                                        <option value="strength">Strength</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black uppercase tracking-widest text-gray-500">Experience Level</label>
+                                <select id="workout-experience" class="contact-input w-full px-4 py-3 md:py-4 text-gray-400 text-sm appearance-none rounded" required>
+                                    <option value="">Select Level</option>
+                                    <option value="beginner">Beginner</option>
+                                    <option value="intermediate">Intermediate</option>
+                                    <option value="advanced">Advanced</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="w-full bg-red-600 py-4 md:py-5 font-black uppercase tracking-[3px] text-xs md:text-sm hover:bg-white hover:text-black transition-all duration-300 rounded">
+                                Generate My Plan
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="space-y-6" data-aos="fade-left">
+                    <div id="workout-result" class="hidden bg-zinc-900 p-6 md:p-8 rounded-3xl border border-white/10">
+                        <h3 class="text-xl md:text-2xl font-black italic uppercase mb-6 text-red-600">Your Custom Plan</h3>
+                        <div id="workout-plan" class="space-y-4"></div>
+                    </div>
+                    
+                    <div class="bg-zinc-900/50 p-6 rounded-3xl border border-white/5">
+                        <h4 class="text-lg font-black italic uppercase mb-4 text-yellow-400">Plan Features</h4>
+                        <ul class="space-y-3 text-sm text-gray-400">
+                            <li><i class="fa-solid fa-check text-red-600 mr-3"></i>7-day structured workout</li>
+                            <li><i class="fa-solid fa-check text-red-600 mr-3"></i>Exercise progressions</li>
+                            <li><i class="fa-solid fa-check text-red-600 mr-3"></i>Rest day recommendations</li>
+                            <li><i class="fa-solid fa-check text-red-600 mr-3"></i>Nutrition tips included</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BMI Calculator Section -->
+    <section id="bmi" class="py-12 md:py-16 bg-black px-4 md:px-6 border-t border-white/5">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
+                <div data-aos="fade-right">
+                    <span class="text-yellow-400 font-black tracking-[4px] uppercase text-xs md:text-sm block mb-4">Know Your Stats</span>
+                    <h2 class="text-3xl md:text-5xl font-black italic uppercase leading-tight mb-8">Measure Your <br> <span class="text-red-600">Performance</span></h2>
+                    <p class="text-gray-400 mb-10 leading-relaxed text-sm md:text-base">The Body Mass Index (BMI) is a starting point. Use our tool to calculate yours and see where you stand on the athletic spectrum.</p>
+                    
+                    <div class="grid grid-cols-2 gap-3 md:gap-4 text-[10px] font-black uppercase tracking-widest">
+                        <div class="p-3 md:p-4 border border-white/5 bg-zinc-900/50 rounded">
+                            <span class="text-blue-400">Underweight</span> <br> <span class="text-white text-sm font-italic">&lt; 18.5</span>
+                        </div>
+                        <div class="p-3 md:p-4 border border-white/5 bg-zinc-900/50 rounded">
+                            <span class="text-green-400">Healthy</span> <br> <span class="text-white text-sm font-italic">18.5 - 24.9</span>
+                        </div>
+                        <div class="p-3 md:p-4 border border-white/5 bg-zinc-900/50 rounded">
+                            <span class="text-yellow-400">Overweight</span> <br> <span class="text-white text-sm font-italic">25 - 29.9</span>
+                        </div>
+                        <div class="p-3 md:p-4 border border-white/5 bg-zinc-900/50 rounded">
+                            <span class="text-red-600">Obese</span> <br> <span class="text-white text-sm font-italic">30 +</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-zinc-900 p-6 md:p-12 rounded-3xl border border-white/10" data-aos="fade-left">
+                    <div class="space-y-6">
+                        <div class="grid grid-cols-2 gap-4 md:gap-6">
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black uppercase tracking-widest text-gray-500">Height (cm)</label>
+                                <input type="number" id="height" placeholder="175" min="50" max="300" class="contact-input w-full px-4 py-3 md:py-4 text-white text-sm rounded">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black uppercase tracking-widest text-gray-500">Weight (kg)</label>
+                                <input type="number" id="weight" placeholder="70" min="20" max="500" class="contact-input w-full px-4 py-3 md:py-4 text-white text-sm rounded">
+                            </div>
+                        </div>
+                        
+                        <button onclick="calculateBMI()" class="w-full bg-white text-black py-4 md:py-5 font-black uppercase tracking-[3px] text-xs md:text-sm hover:bg-red-600 hover:text-white transition-all duration-300 rounded">
+                            Analyze Stats
+                        </button>
+
+                        <div id="bmi-result-card" class="hidden mt-8 p-6 bg-black border-l-4 border-red-600 rounded">
+                            <div class="flex justify-between items-end">
+                                <div>
+                                    <h4 class="text-[10px] font-black uppercase text-gray-500 mb-1">Your BMI Score</h4>
+                                    <div id="bmi-value" class="text-4xl md:text-5xl font-black italic text-white">24.2</div>
+                                </div>
+                                <div class="text-right">
+                                    <h4 class="text-[10px] font-black uppercase text-gray-500 mb-1">Status</h4>
+                                    <div id="bmi-status" class="text-lg md:text-xl font-black italic text-red-600 uppercase">Healthy</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-12 md:py-16 bg-zinc-950 px-4 md:px-6 border-t border-white/5">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16">
+                <div data-aos="fade-right">
+                    <span class="text-red-600 font-black tracking-[4px] uppercase text-xs md:text-sm block mb-4">Join the Elite</span>
+                    <h2 class="text-4xl md:text-6xl font-black italic uppercase leading-tight mb-8">Get In <br> <span class="text-stroke">The Zone</span></h2>
+                    
+                    <p class="text-gray-400 max-w-md mb-12 leading-relaxed text-sm md:text-base">
+                        Ready to transcend your limits? Leave your details below and our head scout will contact you within 24 hours.
+                    </p>
+
+                    <div class="space-y-6">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-zinc-900 flex items-center justify-center text-red-600 border border-white/5 rounded">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-[10px] font-black uppercase text-gray-500 tracking-widest">Base Camp</h4>
+                                <p class="text-sm font-bold italic">Second Floor, Sky Line Plaza, 1, Golf City,</p>
+                                <p class="text-sm font-bold italic">Sector B Ansal API, Lucknow, UP 226030</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-zinc-900 flex items-center justify-center text-red-600 border border-white/5 rounded">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-[10px] font-black uppercase text-gray-500 tracking-widest">Hotline</h4>
+                                <p class="text-sm font-bold italic"><a href="tel:+917007131031" class="hover:text-red-600 transition">070071 31031</a></p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-zinc-900 flex items-center justify-center text-red-600 border border-white/5 rounded">
+                                <i class="fa-solid fa-globe"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-[10px] font-black uppercase text-gray-500 tracking-widest">Website</h4>
+                                <p class="text-sm font-bold italic"><a href="https://anytimefitness.hk" target="_blank" class="hover:text-red-600 transition">anytimefitness.hk</a></p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-zinc-900 flex items-center justify-center text-green-400 border border-white/5 rounded">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-[10px] font-black uppercase text-gray-500 tracking-widest">Hours</h4>
+                                <p class="text-sm font-bold italic text-green-400">Open 24 Hours · Every Day</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-zinc-900/50 p-6 md:p-12 rounded-3xl border border-white/5 shadow-2xl" data-aos="fade-left">
+                    <form onsubmit="storeContact(event)" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black uppercase tracking-[2px] text-gray-500">Name</label>
+                                <input type="text" id="contact-name" class="contact-input w-full px-4 py-3 md:py-4 text-sm text-white rounded" placeholder="YOUR NAME" required>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black uppercase tracking-[2px] text-gray-500">Email</label>
+                                <input type="email" id="contact-email" class="contact-input w-full px-4 py-3 md:py-4 text-sm text-white rounded" placeholder="EMAIL@DOMAIN.COM" required>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black uppercase tracking-[2px] text-gray-500">Program Interest</label>
+                            <select id="contact-program" class="contact-input w-full px-4 py-3 md:py-4 text-sm text-gray-400 appearance-none rounded">
+                                <option>Powerlifting Elite</option>
+                                <option>Functional HIIT</option>
+                                <option>Bodybuilding Pro</option>
+                                <option>Nutrition Deck</option>
+                            </select>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black uppercase tracking-[2px] text-gray-500">Message</label>
+                            <textarea id="contact-message" rows="4" class="contact-input w-full px-4 py-3 md:py-4 text-sm text-white resize-none rounded" placeholder="DESCRIBE YOUR GOALS..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-red-600 py-4 md:py-5 font-black uppercase tracking-[3px] text-xs md:text-sm hover:bg-white hover:text-black transition-all duration-300 skew-x-[-3deg] rounded">
+                            Secure My Slot
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal">
+      <div class="modal-content">
+        <button onclick="closeModal('paymentModal')" class="close-btn">&times;</button>
+        <h2 class="text-2xl font-black mb-4">Complete Your Membership</h2>
+        <p id="payment-plan-info" class="mb-6"></p>
+      </div>
+    </div>
+
+    <!-- Admin Panel Modal -->
+    <div id="adminModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeAdmin()">&times;</span>
+            
+            <div id="admin-login">
+                <h2 class="text-3xl md:text-4xl font-black italic uppercase mb-8 text-red-600">Admin Login</h2>
+                <form onsubmit="adminLogin(event)" class="space-y-6 max-w-md">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase tracking-[2px] text-gray-500">Username</label>
+                        <input type="text" id="admin-username" class="contact-input w-full px-4 py-4 text-sm text-white rounded" placeholder="Admin Username" required>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase tracking-[2px] text-gray-500">Password</label>
+                        <input type="password" id="admin-password" class="contact-input w-full px-4 py-4 text-sm text-white rounded" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="w-full bg-red-600 py-4 font-black uppercase tracking-[3px] text-sm hover:bg-white hover:text-black transition-all duration-300 rounded">
+                        Login
+                    </button>
+                </form>
+            </div>
+            
+            <div id="admin-dashboard" class="hidden">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-3xl md:text-4xl font-black italic uppercase text-red-600">Admin Dashboard</h2>
+                    <button onclick="logoutAdmin()" class="bg-red-600 px-6 py-2 font-black uppercase text-xs rounded hover:bg-white hover:text-black transition">Logout</button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                    <div class="stat-card p-6 rounded-lg">
+                        <h4 class="text-gray-500 text-xs uppercase font-black mb-2">Google Rating</h4>
+                        <p class="text-3xl md:text-4xl font-black text-yellow-400">4.4 ★</p>
+                        <p class="text-xs text-gray-400 mt-2">77 reviews</p>
+                    </div>
+                    <div class="stat-card p-6 rounded-lg">
+                        <h4 class="text-gray-500 text-xs uppercase font-black mb-2">Hours</h4>
+                        <p class="text-3xl md:text-4xl font-black text-green-400">24/7</p>
+                        <p class="text-xs text-gray-400 mt-2">Always open</p>
+                    </div>
+                    <div class="stat-card p-6 rounded-lg">
+                        <h4 class="text-gray-500 text-xs uppercase font-black mb-2">Monthly Revenue</h4>
+                        <p class="text-3xl md:text-4xl font-black text-blue-400">$45.8K</p>
+                        <p class="text-xs text-gray-400 mt-2">↑ 15% from last month</p>
+                    </div>
+                    <div class="stat-card p-6 rounded-lg">
+                        <h4 class="text-gray-500 text-xs uppercase font-black mb-2">Active Programs</h4>
+                        <p class="text-3xl md:text-4xl font-black text-yellow-400">12</p>
+                        <p class="text-xs text-gray-400 mt-2">4 new programs</p>
+                    </div>
+                </div>
+
+                <div class="bg-black rounded-lg border border-white/5 p-6 md:p-8 mb-8">
+                    <h3 class="text-xl md:text-2xl font-black italic uppercase mb-6 text-yellow-400">Recent Contact Submissions</h3>
+                    <div id="contacts-list" class="space-y-4 max-h-96 overflow-y-auto">
+                        <p class="text-gray-400 text-center py-4">Loading submissions...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-12 md:py-16 bg-black border-t border-white/5 px-4 md:px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 mb-8 md:mb-12">
+                <div class="col-span-1 md:col-span-2 lg:col-span-1">
+                    <h3 class="text-2xl font-black italic mb-4 uppercase tracking-tighter">
+                        ANYTIME<span class="text-red-600">FITNESS</span>
+                    </h3>
+                    <p class="text-gray-400 text-sm mb-3 leading-relaxed">
+                        Sky Line Plaza, 2nd Floor, Golf City, Sector B Ansal API, Lucknow, UP 226030
+                    </p>
+                    <div class="badge-open inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold mb-4">
+                        <span class="w-2 h-2 rounded-full bg-green-400 inline-block pulse-dot"></span>
+                        Open 24 Hours
+                    </div>
+                    <div class="flex space-x-4 mt-2">
+                        <a href="#" class="w-10 h-10 bg-zinc-900 flex items-center justify-center text-red-600 rounded hover:bg-red-600 hover:text-white transition"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 bg-zinc-900 flex items-center justify-center text-red-600 rounded hover:bg-red-600 hover:text-white transition"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 bg-zinc-900 flex items-center justify-center text-red-600 rounded hover:bg-red-600 hover:text-white transition"><i class="fa-brands fa-twitter"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-sm font-black uppercase tracking-widest text-white mb-6">Quick Links</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#home" class="text-gray-400 hover:text-red-600 transition text-sm">Home</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-red-600 transition text-sm">About</a></li>
+                        <li><a href="#services" class="text-gray-400 hover:text-red-600 transition text-sm">Services</a></li>
+                        <li><a href="#coach" class="text-gray-400 hover:text-red-600 transition text-sm">Our Trainers</a></li>
+                        <li><a href="#pricing" class="text-gray-400 hover:text-red-600 transition text-sm">Membership</a></li>
+                        <li><a href="#reviews" class="text-gray-400 hover:text-red-600 transition text-sm">Reviews</a></li>
+                        <li><a href="#workout" class="text-gray-400 hover:text-red-600 transition text-sm">AI Workout</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-sm font-black uppercase tracking-widest text-white mb-6">Resources</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-red-600 transition text-sm">Workout Plans</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-red-600 transition text-sm">Nutrition Guide</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-red-600 transition text-sm">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-red-600 transition text-sm">FAQ</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-red-600 transition text-sm">Community</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-sm font-black uppercase tracking-widest text-white mb-6">Contact Info</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-map-pin text-red-600 mt-1 flex-shrink-0"></i>
+                            <span class="text-gray-400 text-sm">Second Floor, Sky Line Plaza, 1, Golf City, Sector B Ansal API, Lucknow, UP 226030</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-phone text-red-600 mt-1 flex-shrink-0"></i>
+                            <a href="tel:+917007131031" class="text-gray-400 hover:text-red-600 transition text-sm">070071 31031</a>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-globe text-red-600 mt-1 flex-shrink-0"></i>
+                            <a href="https://anytimefitness.hk" target="_blank" class="text-gray-400 hover:text-red-600 transition text-sm">anytimefitness.hk</a>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-clock text-green-400 mt-1 flex-shrink-0"></i>
+                            <span class="text-green-400 text-sm font-bold">Open 24 Hours Daily</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Google Maps Embed -->
+            <div class="mb-8 rounded-xl overflow-hidden border border-white/5">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3559.438!2d80.9718!3d26.7941!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zQW55dGltZSBGaXRuZXNzLCBHb2xmIENpdHk!5e0!3m2!1sen!2sin!4v1234567890"
+                    width="100%" height="200" style="border:0; filter: grayscale(80%) invert(90%);" allowfullscreen="" loading="lazy">
+                </iframe>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="bg-gradient-to-r from-red-600 to-red-700 rounded-lg p-6 md:p-8 mb-8 md:mb-12">
+                <h4 class="text-lg md:text-xl font-black uppercase mb-4">Stay Updated</h4>
+                <p class="text-white/90 text-sm mb-6">Get exclusive offers, fitness tips, and member-only deals directly to your inbox.</p>
+                <form onsubmit="subscribeNewsletter(event)" class="flex flex-col md:flex-row gap-3">
+                    <input type="email" placeholder="Enter your email" required class="flex-1 px-4 py-3 rounded text-black bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                    <button type="submit" class="px-6 md:px-8 py-3 bg-black font-black uppercase text-xs hover:bg-white hover:text-black transition rounded">Subscribe</button>
+                </form>
+            </div>
+
+            <div class="border-t border-white/5 pt-8 md:pt-10">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p class="text-gray-500 text-xs md:text-sm text-center md:text-left">
+                        ©️ 2024 Anytime Fitness Golf City, Lucknow. All rights reserved. |
+                        <a href="https://maps.app.goo.gl/QXMR3R" target="_blank" class="text-red-600 font-black hover:underline">QXMR+3R Lucknow</a>
+                    </p>
+                    <div class="flex gap-6 text-xs text-gray-500">
+                        <a href="#" class="hover:text-red-600 transition">Privacy Policy</a>
+                        <a href="#" class="hover:text-red-600 transition">Terms & Conditions</a>
+                        <a href="#" class="hover:text-red-600 transition">Accessibility</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 900, once: true, offset: 120 });
+
+        const navbar = document.getElementById('mainNav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 80) navbar.classList.add('header-blur');
+            else navbar.classList.remove('header-blur');
+        });
+
+        // ===== POPULAR TIMES DATA (Tuesday = index 1, from Google Maps) =====
+        const popularTimesData = [
+            // Mon
+            [0,0,5,10,20,35,50,60,65,55,45,40,35,40,50,60,70,65,50,35,20,10,5,0],
+            // Tue (source: Google Maps — "not too busy" current)
+            [0,0,5,8,15,25,40,55,60,50,40,30,25,30,40,50,55,50,40,25,15,8,3,0],
+            // Wed
+            [0,0,5,10,20,35,55,65,70,60,50,45,40,45,55,65,75,70,55,40,25,12,5,0],
+            // Thu
+            [0,0,5,10,25,40,55,68,72,62,52,44,40,44,54,65,72,68,52,38,22,10,4,0],
+            // Fri
+            [0,0,5,12,25,42,58,68,72,65,55,48,42,48,58,68,75,70,55,40,25,12,5,0],
+            // Sat
+            [0,0,0,5,15,30,50,65,70,65,60,55,50,55,60,65,60,50,40,30,18,8,2,0],
+            // Sun
+            [0,0,0,5,12,25,40,55,60,55,50,45,42,45,50,55,52,42,30,20,10,5,0,0]
+        ];
+
+        const timeLabels = ['12a','1a','2a','3a','4a','5a','6a','7a','8a','9a','10a','11a','12p','1p','2p','3p','4p','5p','6p','7p','8p','9p','10p','11p'];
+
+        let currentDay = 0;
+
+        function showDay(idx) {
+            currentDay = idx;
+            // Update tab styles
+            document.querySelectorAll('.day-tab').forEach((btn, i) => {
+                btn.className = 'day-tab px-4 py-2 rounded-lg text-xs font-black uppercase transition ' +
+                    (i === idx ? 'bg-red-600 text-white' : 'bg-zinc-800 text-gray-400 hover:bg-zinc-700');
+            });
+            renderBars(idx);
+        }
+
+        function renderBars(idx) {
+            const data = popularTimesData[idx];
+            const container = document.getElementById('popular-bars');
+            container.innerHTML = '';
+            const max = Math.max(...data) || 1;
+            const now = new Date().getHours();
+            const dayNames = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+
+            data.forEach((val, h) => {
+                const bar = document.createElement('div');
+                const pct = Math.round((val / max) * 100);
+                const isNow = (idx === new Date().getDay() - 1) && h === now;
+                bar.className = 'bar flex-1';
+                bar.style.height = pct + '%';
+                bar.style.minHeight = '4px';
+                bar.style.background = isNow ? '#facc15' : (val > 60 ? '#dc2626' : val > 30 ? '#f97316' : '#374151');
+                bar.title = `${timeLabels[h]}: ${val === 0 ? 'Closed/Very quiet' : val > 70 ? 'Very busy' : val > 40 ? 'Somewhat busy' : 'Not busy'}`;
+                container.appendChild(bar);
+            });
+
+            // Status text
+            const currentVal = data[now];
+            let statusText = '';
+            if (currentVal === 0) statusText = `<span class="text-gray-400">Typically very quiet or closed at this hour on ${dayNames[idx]}.</span>`;
+            else if (currentVal < 25) statusText = `<span class="text-green-400 font-bold">Not too busy</span> <span class="text-gray-400">— great time to visit on ${dayNames[idx]}!</span>`;
+            else if (currentVal < 55) statusText = `<span class="text-yellow-400 font-bold">Somewhat busy</span> <span class="text-gray-400">— moderate crowd on ${dayNames[idx]}.</span>`;
+            else statusText = `<span class="text-red-500 font-bold">Usually busy</span> <span class="text-gray-400">— peak hour on ${dayNames[idx]}.</span>`;
+
+            document.getElementById('popular-status').innerHTML = '🕐 <strong>Right now (based on typical patterns):</strong> ' + statusText;
+        }
+
+        // Init popular times
+        renderBars(0);
+
+        // BMI Calculator
+        function calculateBMI() {
+            const h = document.getElementById('height').value;
+            const w = document.getElementById('weight').value;
+            if(h > 0 && w > 0) {
+                const bmi = (w / ((h/100) * (h/100))).toFixed(1);
+                const resultCard = document.getElementById('bmi-result-card');
+                const valDisp = document.getElementById('bmi-value');
+                const statusDisp = document.getElementById('bmi-status');
+                valDisp.innerText = bmi;
+                resultCard.classList.remove('hidden');
+                let status = "", color = "";
+                if(bmi < 18.5) { status = "Underweight"; color = "#60a5fa"; }
+                else if(bmi < 25) { status = "Healthy"; color = "#4ade80"; }
+                else if(bmi < 30) { status = "Overweight"; color = "#facc15"; }
+                else { status = "Obese"; color = "#dc2626"; }
+                statusDisp.innerText = status;
+                statusDisp.style.color = color;
+                resultCard.style.borderColor = color;
+                resultCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+                alert("Please enter valid height and weight stats.");
+            }
+        }
+
+        // Contact Form
+        function storeContact(event) {
+            event.preventDefault();
+            const name = document.getElementById('contact-name').value;
+            const email = document.getElementById('contact-email').value;
+            const program = document.getElementById('contact-program').value;
+            const message = document.getElementById('contact-message').value;
+            const contact = { name, email, program, message, date: new Date().toISOString() };
+            let contacts = JSON.parse(localStorage.getItem('contacts')) || [];
+            contacts.push(contact);
+            localStorage.setItem('contacts', JSON.stringify(contacts));
+            alert('Thank you! We will contact you shortly.');
+            event.target.reset();
+        }
+
+        // Admin
+        function toggleAdmin() {
+            const modal = document.getElementById('adminModal');
+            modal.classList.toggle('show');
+            document.body.style.overflow = modal.classList.contains('show') ? 'hidden' : 'auto';
+        }
+        function closeAdmin() {
+            document.getElementById('adminModal').classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+        function adminLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('admin-username').value;
+            const password = document.getElementById('admin-password').value;
+            if (username === 'admin' && password === 'password') {
+                localStorage.setItem('adminLoggedIn', 'true');
+                document.getElementById('admin-login').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                loadContacts();
+            } else {
+                alert('Invalid credentials. Use admin/password');
+            }
+        }
+        function logoutAdmin() {
+            localStorage.removeItem('adminLoggedIn');
+            document.getElementById('admin-login').classList.remove('hidden');
+            document.getElementById('admin-dashboard').classList.add('hidden');
+            document.getElementById('admin-username').value = '';
+            document.getElementById('admin-password').value = '';
+        }
+        function loadContacts() {
+            const contacts = JSON.parse(localStorage.getItem('contacts')) || [];
+            const list = document.getElementById('contacts-list');
+            list.innerHTML = '';
+            if (contacts.length === 0) {
+                list.innerHTML = '<p class="text-gray-400 text-center py-8">No contact submissions yet.</p>';
+                return;
+            }
+            contacts.reverse().forEach((contact) => {
+                const item = document.createElement('div');
+                item.className = 'bg-zinc-900/50 p-4 rounded-lg border border-white/5 hover:border-red-600 transition';
+                item.innerHTML = `
+                    <div class="flex justify-between items-start gap-4">
+                        <div class="flex-1">
+                            <h5 class="font-black text-red-600 uppercase text-sm">${contact.name}</h5>
+                            <p class="text-xs text-gray-400 mt-1">${contact.email}</p>
+                            <p class="text-xs text-gray-400 mt-1"><strong>Program:</strong> ${contact.program}</p>
+                            <p class="text-xs text-gray-400 mt-2 line-clamp-2"><strong>Message:</strong> ${contact.message}</p>
+                        </div>
+                        <p class="text-xs text-gray-500 whitespace-nowrap">${new Date(contact.date).toLocaleDateString()}</p>
+                    </div>`;
+                list.appendChild(item);
+            });
+        }
+
+        function openModal(id){ document.getElementById(id).classList.add('show'); document.body.style.overflow='hidden'; }
+        function closeModal(id){ document.getElementById(id).classList.remove('show'); document.body.style.overflow='auto'; }
+
+        function openPaymentModal(plan, price) {
+            document.getElementById('payment-plan-info').innerText = plan + ' plan $' + price + '/mo';
+            openModal('paymentModal');
+        }
+
+        function subscribeNewsletter(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input[type="email"]').value;
+            alert(`Thanks for subscribing with ${email}!`);
+            event.target.reset();
+        }
+
+        // Workout Generator
+        function generateWorkout(event) {
+            event.preventDefault();
+            const goal = document.getElementById('workout-goal').value;
+            const level = document.getElementById('workout-experience').value;
+            let plan = '';
+            if(goal === 'muscle-gain') {
+                if(level === 'beginner') {
+                    plan = `<h4 class="font-black text-yellow-400">Muscle Gain - Beginner Plan</h4><table class="w-full text-sm"><tr><th class="text-left">Day 1: Chest & Triceps</th></tr><tr><td>Bench Press: 3×10</td></tr><tr><td>Push-ups: 3×12</td></tr><tr><td>Tricep Dips: 3×10</td></tr><tr><th class="text-left">Day 2: Back & Biceps</th></tr><tr><td>Pull-ups: 3×8</td></tr><tr><td>Rows: 3×10</td></tr><tr><td>Bicep Curls: 3×12</td></tr><tr><th class="text-left">Day 3: Rest</th></tr><tr><th class="text-left">Day 4: Legs</th></tr><tr><td>Squats: 3×10</td></tr><tr><td>Lunges: 3×10/leg</td></tr><tr><td>Calf Raises: 3×15</td></tr><tr><th class="text-left">Day 5: Shoulders & Abs</th></tr><tr><td>Shoulder Press: 3×10</td></tr><tr><td>Lateral Raises: 3×12</td></tr><tr><td>Planks: 3×30 sec</td></tr><tr><th class="text-left">Day 6-7: Rest</th></tr></table>`;
+                } else if(level === 'intermediate') {
+                    plan = `<h4 class="font-black text-yellow-400">Muscle Gain - Intermediate Plan</h4><table class="w-full text-sm"><tr><th class="text-left">Day 1: Chest & Triceps</th></tr><tr><td>Bench Press: 4×8-10</td></tr><tr><td>Incline Dumbbell Press: 4×10</td></tr><tr><td>Tricep Extensions: 3×10</td></tr><tr><th class="text-left">Day 2: Back & Biceps</th></tr><tr><td>Deadlifts: 4×8</td></tr><tr><td>Pull-ups: 4×10</td></tr><tr><td>Barbell Curls: 3×10</td></tr><tr><th class="text-left">Day 3: Rest</th></tr><tr><th class="text-left">Day 4: Legs</th></tr><tr><td>Squats: 4×8</td></tr><tr><td>Leg Press: 4×10</td></tr><tr><td>Leg Curls: 3×12</td></tr><tr><th class="text-left">Day 5: Shoulders & Abs</th></tr><tr><td>Military Press: 4×8</td></tr><tr><td>Hanging Leg Raises: 3×12</td></tr><tr><th class="text-left">Day 6-7: Rest</th></tr></table>`;
+                } else {
+                    plan = `<h4 class="font-black text-yellow-400">Muscle Gain - Advanced Plan</h4><table class="w-full text-sm"><tr><th class="text-left">Day 1: Chest & Triceps</th></tr><tr><td>Bench Press: 5×5-8</td></tr><tr><td>Dumbbell Flyes: 4×10</td></tr><tr><td>Close-Grip Bench: 4×8</td></tr><tr><th class="text-left">Day 2: Back & Biceps</th></tr><tr><td>Deadlifts: 5×5</td></tr><tr><td>Weighted Pull-ups: 4×8</td></tr><tr><td>Preacher Curls: 4×8</td></tr><tr><th class="text-left">Day 3: Rest</th></tr><tr><th class="text-left">Day 4: Legs</th></tr><tr><td>Front Squats: 5×5</td></tr><tr><td>Romanian Deadlifts: 4×8</td></tr><tr><td>Calf Raises: 4×15</td></tr><tr><th class="text-left">Day 5-7: Shoulders & Rest</th></tr><tr><td>Overhead Press: 5×5</td></tr></table>`;
+                }
+            } else if(goal === 'fat-loss') {
+                plan = `<h4 class="font-black text-yellow-400">Fat Loss Plan</h4><table class="w-full text-sm"><tr><th class="text-left">Day 1: Full Body HIIT</th></tr><tr><td>Burpees: 4×15</td></tr><tr><td>Mountain Climbers: 4×30 sec</td></tr><tr><td>Jumping Jacks: 4×50</td></tr><tr><th class="text-left">Day 2: Cardio + Core</th></tr><tr><td>Running: 30 min</td></tr><tr><td>Planks: 4×45 sec</td></tr><tr><th class="text-left">Day 3: Rest</th></tr><tr><th class="text-left">Day 4: Strength Circuit</th></tr><tr><td>Squats: 4×15</td></tr><tr><td>Push-ups: 4×20</td></tr><tr><td>Pull-ups: 4×10</td></tr><tr><th class="text-left">Day 5: Cardio</th></tr><tr><td>Cycling: 45 min</td></tr><tr><th class="text-left">Day 6-7: Active Rest</th></tr></table>`;
+            } else {
+                plan = `<h4 class="font-black text-yellow-400">Strength Building Plan</h4><table class="w-full text-sm"><tr><th class="text-left">Day 1: Upper Body</th></tr><tr><td>Bench Press: 5×5</td></tr><tr><td>Overhead Press: 5×5</td></tr><tr><td>Rows: 5×5</td></tr><tr><th class="text-left">Day 2: Lower Body</th></tr><tr><td>Squats: 5×5</td></tr><tr><td>Deadlifts: 5×5</td></tr><tr><th class="text-left">Day 3: Rest</th></tr><tr><th class="text-left">Day 4: Upper Body</th></tr><tr><td>Bench Press: 5×5</td></tr><tr><td>Overhead Press: 5×5</td></tr><tr><th class="text-left">Day 5: Lower Body</th></tr><tr><td>Squats: 5×5</td></tr><tr><td>Deadlifts: 5×5</td></tr><tr><th class="text-left">Day 6-7: Rest</th></tr></table>`;
+            }
+            document.getElementById('workout-plan').innerHTML = plan;
+            document.getElementById('workout-result').classList.remove('hidden');
+        }
+
+        window.addEventListener('load', () => {
+            if (localStorage.getItem('adminLoggedIn') === 'true') {
+                document.getElementById('admin-login').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                loadContacts();
+            }
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target === document.getElementById('adminModal')) closeAdmin();
+            if (event.target === document.getElementById('paymentModal')) closeModal('paymentModal');
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') { closeAdmin(); closeModal('paymentModal'); }
+        });
+    </script>
+</body>
+</html>
